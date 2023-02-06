@@ -28,16 +28,12 @@ class Config {
     }
 
     readConfig() {
-        fs.readFile(this.configFile, (err, data) => {
-            if (err) throw err;
-
-            this.jsonConfig = JSON.parse(data);
-            console.log(this.jsonConfig);
-        });
+        const content = fs.readFileSync(this.configFile);
+        this.jsonConfig = JSON.parse(content.toString())
     }
 
-    get(key) {
-        return this.jsonConfig.get(key);
+    get() {
+        return this.jsonConfig
     }
 
 }

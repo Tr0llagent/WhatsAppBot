@@ -8,7 +8,7 @@ const client = new Client();
 
 const config = new Config("./config.json");
 
-const commandManager = new CommandManager();
+const commandManager = new CommandManager(config);
 commandManager.registerCommands()
 
 client.on('loading_screen', (percent, message) => {

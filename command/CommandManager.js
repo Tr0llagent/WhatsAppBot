@@ -11,7 +11,7 @@ class CommandManager {
 
 
     registerCommands() {
-        this.registerCommand("HelloCommand", "hello", "!hello", "Just says Hello", true)
+        this.registerCommand("HelloCommand", "hello", "!hello", "Just says Hello", false)
     }
 
     registerCommand(fileName, name, syntax, description, isPublic) {
@@ -22,9 +22,16 @@ class CommandManager {
 
     executeCommands(msg) {
         this.commands.forEach(cmd => {
-            if (msg.body.startsWith(this.config.get("prefix") + cmd.name)) {
-                if (!cmd.execute(msg)) {
-                    msg.reply("Usage:\n" + cmd.syntax)
+            if (msg.body.startsWith(this.config.get().prefix + cmd.name.toLowerCase())) {
+                if (!cmd.isPublic) {
+                    console.log(msg.from.split("@")[0])
+                    this.config.get().allowedNumbers.forEach(number => {
+                        if (number === msg.from.split("@")[0]) {
+                            if (!cmd.execute(msg)) {
+                                msg.reply("Usage:\n" + cmd.syntax)
+                            }
+                        }
+                    })
                 }
                 return 0
             }
